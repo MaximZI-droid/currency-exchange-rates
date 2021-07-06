@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConverterActivity"
+    tools:context="com.zimax.ConverterActivity"
     android:padding="10dp">
 
     <Spinner
@@ -71,15 +71,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/rightConverterEditTextNumber"
+    <TextView
+        android:id="@+id/rightConverterTextView"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="25dp"
         android:ems="10"
         android:hint="Валюта №2"
-        android:inputType="number"
         android:textAlignment="center"
         android:textSize="17sp"
         android:textStyle="italic"
@@ -95,10 +94,22 @@
         android:text="Конвертировать"
         android:textStyle="bold"
         android:elevation="70dp"
+        android:onClick="convert"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/leftConverterSpinner"
-        android:onClick="convert"/>
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/changeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toStartOf="@+id/rightConverterImageView"
+        app:layout_constraintStart_toEndOf="@+id/leftConverterImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_change_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
