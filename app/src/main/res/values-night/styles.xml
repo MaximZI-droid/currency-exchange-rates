@@ -1,6 +1,6 @@
 <resources>
 
     <style name="Widget.Theme.Converter.MyView" parent="">
-        <item name="android:background">@color/gray_400</item>
+        <item name="android:background">@color/gray_600</item>
     </style>
 </resources>

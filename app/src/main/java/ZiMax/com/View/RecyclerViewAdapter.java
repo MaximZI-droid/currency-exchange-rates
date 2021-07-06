@@ -1,4 +1,4 @@
-package com.zimax.view;
+package ZiMax.com.View;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zimax.R;
-
 import java.util.List;
 
+import ZiMax.com.R;
 
-public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRecyclerViewAdapter.RecyclerViewViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewViewHolder> {
 
-    private List<Currency> arrayList;
+    private List<RecyclerViewItem> arrayList;
 
-    public CurrencyRecyclerViewAdapter(List<Currency> arrayList) {
+    public RecyclerViewAdapter(List<RecyclerViewItem> arrayList) {
         this.arrayList = arrayList;
     }
 
@@ -30,26 +29,26 @@ public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRe
         public RecyclerViewViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewInCard);
-            textView1 = itemView.findViewById(R.id.textViewInCard);
+            textView1 = itemView.findViewById(R.id.textViewInCard1);
         }
     }
 
     @Override
     public RecyclerViewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_card, parent, false);
         RecyclerViewViewHolder recyclerViewViewHolder = new RecyclerViewViewHolder(view);
         return recyclerViewViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(CurrencyRecyclerViewAdapter.RecyclerViewViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewAdapter.RecyclerViewViewHolder holder, int position) {
 
-        Currency currency = arrayList.get(position);
+        RecyclerViewItem recyclerViewItem = arrayList.get(position);
 
-        holder.imageView.setImageResource(currency.getCurrencyFlag());
+        holder.imageView.setImageResource(recyclerViewItem.getCurrencyFlag());
 
-        String str = currency.getCurrencyName() + " ( "+ currency.getCurrencyTicker() + ")"
-                + "\nцена : " + currency.getCurrencyValue() + " RUB";
+        String str = recyclerViewItem.getCurrencyName() + " ( "+ recyclerViewItem.getCurrencyTicker() + ")"
+                + "\nцена : " + recyclerViewItem.getCurrencyValue() + " RUB";
         holder.textView1.setText(str);
 
     }

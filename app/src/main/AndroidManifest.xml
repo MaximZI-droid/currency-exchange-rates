@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zimax">
+    package="ZiMax.com">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,9 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Converter">
 
-        <activity android:name="com.zimax.ConverterActivity" />
-        <activity android:name="com.zimax.MainActivity"
-            android:screenOrientation="nosensor">
+        <activity android:name=".ConverterActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
