@@ -1,4 +1,4 @@
-package com.zimax.view;
+package com.zimax.models;
 
 import java.io.Serializable;
 

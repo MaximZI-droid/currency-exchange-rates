@@ -11,27 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zimax.R;
+import com.zimax.models.Currency;
 
 import java.util.List;
 
 
 public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRecyclerViewAdapter.RecyclerViewViewHolder> {
 
-    private List<Currency> arrayList;
+    private List<Currency> currencyList;
 
-    public CurrencyRecyclerViewAdapter(List<Currency> arrayList) {
-        this.arrayList = arrayList;
-    }
-
-    public class RecyclerViewViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
-        public TextView textView1;
-
-        public RecyclerViewViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.imageViewInCard);
-            textView1 = itemView.findViewById(R.id.textViewInCard);
-        }
+    public CurrencyRecyclerViewAdapter(List<Currency> currencyList) {
+        this.currencyList = currencyList;
     }
 
     @Override
@@ -44,19 +34,28 @@ public class CurrencyRecyclerViewAdapter extends RecyclerView.Adapter<CurrencyRe
     @Override
     public void onBindViewHolder(CurrencyRecyclerViewAdapter.RecyclerViewViewHolder holder, int position) {
 
-        Currency currency = arrayList.get(position);
+        Currency currency = currencyList.get(position);
 
         holder.imageView.setImageResource(currency.getCurrencyFlag());
 
-        String str = currency.getCurrencyName() + " ( "+ currency.getCurrencyTicker() + ")"
+        String str = currency.getCurrencyName() + " ("+ currency.getCurrencyTicker() + ")"
                 + "\nцена : " + currency.getCurrencyValue() + " RUB";
         holder.textView1.setText(str);
-
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return currencyList.size();
     }
 
+    public static class RecyclerViewViewHolder extends RecyclerView.ViewHolder {
+        public ImageView imageView;
+        public TextView textView1;
+
+        public RecyclerViewViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.imageViewInCard);
+            textView1 = itemView.findViewById(R.id.textViewInCard);
+        }
+    }
 }
