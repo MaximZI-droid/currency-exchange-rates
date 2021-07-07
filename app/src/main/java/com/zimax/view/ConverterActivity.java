@@ -1,4 +1,4 @@
-package com.zimax;
+package com.zimax.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.zimax.view.Currency;
+import com.zimax.R;
+import com.zimax.bussiness.Convertation;
+import com.zimax.models.Currency;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +30,17 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
 
     private String leftChooseCurrency;
     private String rightChooseCurrency;
-
+    private EditText firstTextView;
+    private TextView secondTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_converter);
         setTitle("Конвертер валют");
+
+        firstTextView = findViewById(R.id.leftConverterEditTextNumber);
+        secondTextView = findViewById(R.id.rightConverterTextView);
 
         currencyList = (ArrayList<Currency>) getIntent().getSerializableExtra(EXTRA_ITEM);
 
@@ -61,10 +68,11 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
     }
 
     public void convert(View view) {
-        convertation();
+        new Convertation().convertation(leftChooseCurrency, rightChooseCurrency,
+                currencyList, firstTextView, secondTextView, leftCurrencySpinner, rightCurrencySpinner);
     }
 
-    private void replaceFlagAfterChoose(){
+    private void replaceFlagAfterChoose() {
         ImageView leftImageView = findViewById(R.id.leftConverterImageView);
         ImageView rightImageView = findViewById(R.id.rightConverterImageView);
 
@@ -83,42 +91,6 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
-    private void convertation(){
-
-        EditText firstTextView = findViewById(R.id.leftConverterEditTextNumber);
-        TextView secondTextView = findViewById(R.id.rightConverterTextView);
-
-        leftChooseCurrency = leftCurrencySpinner.getSelectedItem().toString();
-        rightChooseCurrency = rightCurrencySpinner.getSelectedItem().toString();
-
-        try {
-            int convertInRub;
-            int convertInCur = 0;
-
-            int enteredNumber = Integer.parseInt(firstTextView.getText().toString());
-
-            for (int i = 0; i < currencyList.size(); i++) {
-                if (leftChooseCurrency.equals(currencyList.get(i).getCurrencyTicker() + " ("
-                        + currencyList.get(i).getCurrencyName() + ")")) {
-                    convertInRub = (int) (enteredNumber / Integer.parseInt(currencyList.get(i).getCurrencyNominal()) * Float.parseFloat(currencyList.get(i).getCurrencyValue()));
-                    //Log.d("myLOG", convertInRub + "");
-                    for (int j = 0; j < currencyList.size(); j++) {
-                        if (rightChooseCurrency.equals(currencyList.get(j).getCurrencyTicker() + " ("
-                                + currencyList.get(j).getCurrencyName() + ")")) {
-                            convertInCur = (int) ((convertInRub * Integer.parseInt(currencyList.get(j).getCurrencyNominal())) / Float.parseFloat(currencyList.get(j).getCurrencyValue()));
-                            //Log.d("myLOG", convertInCur + "");
-                        }
-                    }
-                }
-                secondTextView.setText(convertInCur + "");
-            }
-
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private void createSpinners() {
         leftCurrencySpinner = findViewById(R.id.leftConverterSpinner);
         leftCurrencySpinner.setOnItemSelectedListener(this);
@@ -135,7 +107,7 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
 
     private void createAdapter() {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, SpinnerList);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         leftCurrencySpinner.setAdapter(spinnerAdapter);
         rightCurrencySpinner.setAdapter(spinnerAdapter);
     }

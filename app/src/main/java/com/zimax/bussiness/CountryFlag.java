@@ -1,4 +1,4 @@
-package com.zimax.view;
+package com.zimax.bussiness;
 
 import com.zimax.R;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class CountryFlag {
 
-    public Map<String, Integer> mapFlagContainer = new HashMap<>();
+    private Map<String, Integer> mapFlagContainer = new HashMap<>();
 
     public Map<String, Integer> getFlagContainer() {
         return mapFlagContainer;

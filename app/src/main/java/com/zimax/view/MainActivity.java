@@ -1,4 +1,4 @@
-package com.zimax;
+package com.zimax.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,13 +14,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.Serializable;
 import java.util.concurrent.ExecutionException;
 
-import com.zimax.api.GetCurrency;
-import com.zimax.view.CurrencyRecyclerViewAdapter;
+import com.zimax.R;
+import com.zimax.api.GetCurrencyAsyncTask;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "myLOG";
-    private GetCurrency getCurrency;
+    private GetCurrencyAsyncTask getCurrencyAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,24 +34,24 @@ public class MainActivity extends AppCompatActivity {
         getCurrencyList();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CurrencyRecyclerViewAdapter adapter = new CurrencyRecyclerViewAdapter(getCurrency.currencyList);
+        CurrencyRecyclerViewAdapter adapter = new CurrencyRecyclerViewAdapter(getCurrencyAsyncTask.getCurrencyList());
         recyclerView.setAdapter(adapter);
 
         converterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ConverterActivity.class);
-                intent.putExtra(ConverterActivity.EXTRA_ITEM, (Serializable) getCurrency.currencyList);
+                intent.putExtra(ConverterActivity.EXTRA_ITEM, (Serializable) getCurrencyAsyncTask.getCurrencyList());
                 startActivity(intent);
             }
         });
     }
 
     private void getCurrencyList() {
-        getCurrency = new GetCurrency();
-        getCurrency.execute();
+        getCurrencyAsyncTask = new GetCurrencyAsyncTask();
+        getCurrencyAsyncTask.execute();
         try {
-            getCurrency.get();
+            getCurrencyAsyncTask.get();
         } catch (ExecutionException | InterruptedException e) {
             Log.d(LOG_TAG, "Ошибка XML");
             e.printStackTrace();

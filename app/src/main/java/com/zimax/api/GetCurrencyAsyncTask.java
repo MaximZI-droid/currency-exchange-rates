@@ -16,20 +16,19 @@ import java.util.List;
 import java.util.Map;
 
 import com.zimax.R;
-import com.zimax.view.CountryFlag;
-import com.zimax.view.Currency;
+import com.zimax.bussiness.CountryFlag;
+import com.zimax.models.Currency;
 
-public class GetCurrency extends AsyncTask<Void, Void, List<Currency>> {
+public class GetCurrencyAsyncTask extends AsyncTask<Void, Void, List<Currency>> {
 
-    private URL url;
-    private Currency oneCurrency;
-    public List<Currency> currencyList;
-
+    private List<Currency> currencyList;
 
     @SuppressLint("WrongThread")
     @Override
     protected List<Currency> doInBackground(Void... voids) {
         super.onPreExecute();
+        URL url = null;
+        Currency oneCurrency = null;
 
         String link = "http://www.cbr.ru/scripts/XML_daily.asp";
         String LOG_TAG = "myLOG";
@@ -39,7 +38,6 @@ public class GetCurrency extends AsyncTask<Void, Void, List<Currency>> {
         final String NOMINAL = "Nominal";
         final String NAME = "Name";
         final String VALUE = "Value";
-
 
         try {
             url = new URL(link);
@@ -51,6 +49,7 @@ public class GetCurrency extends AsyncTask<Void, Void, List<Currency>> {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xmlParser = factory.newPullParser();
+            assert url != null;
             xmlParser.setInput(url.openStream(), null);
 
             int eventType = xmlParser.getEventType();
@@ -93,7 +92,7 @@ public class GetCurrency extends AsyncTask<Void, Void, List<Currency>> {
         } catch (XmlPullParserException e) {
             Log.d(LOG_TAG, "Ошибка XML");
             e.printStackTrace();
-        } catch (IOException e){
+        } catch (IOException e) {
             Log.d(LOG_TAG, "Ошибка подключения интернета");
             e.printStackTrace();
         }
@@ -102,7 +101,11 @@ public class GetCurrency extends AsyncTask<Void, Void, List<Currency>> {
         return currencyList;
     }
 
-    private void setFlag(List<Currency> list){
+    public List<Currency> getCurrencyList() {
+        return currencyList;
+    }
+
+    private void setFlag(List<Currency> list) {
         CountryFlag countryFlag = new CountryFlag();
         countryFlag.createFlag();
 
