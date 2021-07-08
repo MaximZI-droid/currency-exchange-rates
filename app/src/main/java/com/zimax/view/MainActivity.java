@@ -6,16 +6,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
+import android.text.AndroidCharacter;
 import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.zimax.R;
+import com.zimax.api.CurrencyRepository;
 import com.zimax.api.GetCurrencyAsyncTask;
+import com.zimax.models.Currency;
+
+import io.reactivex.Scheduler;
+import io.reactivex.SingleObserver;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,14 +58,37 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getCurrencyList() {
-        getCurrencyAsyncTask = new GetCurrencyAsyncTask();
+    private void getCurrencyList() throws NetworkOnMainThreadException {
+
+        CurrencyRepository currencyRepository = new CurrencyRepository();
+
+        currencyRepository.getCurrencyList().subscribeOn(Schedulers.io()).observeOn(Schedulers.newThread())
+                .subscribe(new SingleObserver<List<Currency>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.d(LOG_TAG, "onSubscribe");
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<Currency> currencies) {
+                        for (Currency currency : currencies) {
+                            Log.d(LOG_TAG, currency.getCurrencyName() + "");
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(LOG_TAG, "onError");
+                    }
+                });
+
+        /*getCurrencyAsyncTask = new GetCurrencyAsyncTask();
         getCurrencyAsyncTask.execute();
         try {
             getCurrencyAsyncTask.get();
         } catch (ExecutionException | InterruptedException e) {
             Log.d(LOG_TAG, "Ошибка XML");
             e.printStackTrace();
-        }
+        }*/
     }
 }
