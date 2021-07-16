@@ -1,19 +1,22 @@
 package com.zimax.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.zimax.viewmodel.ConverterViewModel;
 import com.zimax.R;
-import com.zimax.bussiness.Convertation;
 import com.zimax.models.Currency;
 
 import java.util.ArrayList;
@@ -30,8 +33,9 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
 
     private String leftChooseCurrency;
     private String rightChooseCurrency;
-    private EditText firstTextView;
-    private TextView secondTextView;
+    private TextView rightTextView;
+    private EditText leftTextView;
+    private ConverterViewModel converterViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +43,19 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
         setContentView(R.layout.activity_converter);
         setTitle("Конвертер валют");
 
-        firstTextView = findViewById(R.id.leftConverterEditTextNumber);
-        secondTextView = findViewById(R.id.rightConverterTextView);
+        leftTextView = findViewById(R.id.leftConverterEditTextNumber);
+        Button button = findViewById(R.id.button);
+        rightTextView = findViewById(R.id.rightConverterTextView);
 
         currencyList = (ArrayList<Currency>) getIntent().getSerializableExtra(EXTRA_ITEM);
+
+        converterViewModel = new ViewModelProvider(this).get(ConverterViewModel.class);
+        converterViewModel.dataConverterResult.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                rightTextView.setText(integer + "");
+            }
+        });
 
         createSpinners();
         createAdapter();
@@ -52,10 +65,16 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                change();
+                changeCurrencyPlace();
             }
         });
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getConverterResult();
+            }
+        });
     }
 
     @Override
@@ -65,11 +84,6 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-    }
-
-    public void convert(View view) {
-        new Convertation().convertation(leftChooseCurrency, rightChooseCurrency,
-                currencyList, firstTextView, secondTextView, leftCurrencySpinner, rightCurrencySpinner);
     }
 
     private void replaceFlagAfterChoose() {
@@ -112,11 +126,16 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
         rightCurrencySpinner.setAdapter(spinnerAdapter);
     }
 
-    private void change() {
+    private void changeCurrencyPlace() {
         int leftChoose = leftCurrencySpinner.getSelectedItemPosition();
         int rightChoose = rightCurrencySpinner.getSelectedItemPosition();
 
         leftCurrencySpinner.setSelection(rightChoose);
         rightCurrencySpinner.setSelection(leftChoose);
+    }
+
+    private void getConverterResult(){
+        converterViewModel.converterInViewModel(leftChooseCurrency, rightChooseCurrency,
+                currencyList, leftTextView, leftCurrencySpinner, rightCurrencySpinner);
     }
 }
