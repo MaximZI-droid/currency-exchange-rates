@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<Currency> currencyList;
+    private CurrencyRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         mainViewModel.dataListCurrency.observe(this, new Observer<List<Currency>>() {
             @Override
             public void onChanged(List<Currency> currencies) {
-                CurrencyRecyclerViewAdapter adapter = new CurrencyRecyclerViewAdapter(currencies);
+                adapter = new CurrencyRecyclerViewAdapter(currencies);
                 recyclerView.setAdapter(adapter);
                 currencyList = currencies;
             }

@@ -36,7 +36,6 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
     private TextView rightTextView;
     private EditText leftTextView;
     private ConverterViewModel converterViewModel;
-    private int result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
         converterViewModel.dataConverterResult.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                result = integer;
+                rightTextView.setText(integer + "");
             }
         });
 
@@ -138,6 +137,5 @@ public class ConverterActivity extends AppCompatActivity implements AdapterView.
     private void getConverterResult(){
         converterViewModel.converterInViewModel(leftChooseCurrency, rightChooseCurrency,
                 currencyList, leftTextView, leftCurrencySpinner, rightCurrencySpinner);
-        rightTextView.setText(result + "");
     }
 }
