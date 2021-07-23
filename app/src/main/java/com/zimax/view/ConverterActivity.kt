@@ -21,14 +21,9 @@ class ConverterActivity : AppCompatActivity(), OnItemSelectedListener {
 
     private lateinit var leftCurrencySpinner: Spinner
     private lateinit var rightCurrencySpinner: Spinner
-
-    //поменять на private var lazy rightTextView: TextView
     private lateinit var rightTextView: TextView
-
-    //поменять на private var lazy
     private lateinit var leftTextView: EditText
 
-    //поменять на private var lazy
     private lateinit var converterViewModel: ConverterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +46,11 @@ class ConverterActivity : AppCompatActivity(), OnItemSelectedListener {
         converterViewModel.currencyList.addAll(intent.getSerializableExtra(EXTRA_ITEM) as ArrayList<Currency>)
 
         leftCurrencySpinner = findViewById(R.id.leftConverterSpinner)
-        leftCurrencySpinner.setOnItemSelectedListener(this)
+        leftCurrencySpinner.onItemSelectedListener = this
         rightCurrencySpinner = findViewById(R.id.rightConverterSpinner)
-        rightCurrencySpinner.setOnItemSelectedListener(this)
+        rightCurrencySpinner.onItemSelectedListener = this
         converterViewModel.createSpinner()
         createAdapter()
-
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
@@ -83,7 +77,7 @@ class ConverterActivity : AppCompatActivity(), OnItemSelectedListener {
 
     private fun createAdapter() {
         val spinnerAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, converterViewModel.SpinnerList)
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, converterViewModel.spinnerList)
         spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
 
         leftCurrencySpinner.adapter = spinnerAdapter

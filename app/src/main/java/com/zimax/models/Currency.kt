@@ -5,10 +5,10 @@ import java.io.Serializable
 class Currency : Serializable {
 
     var currencyFlag = 0
-    lateinit var currencyName: String
-    lateinit var currencyValue: String
-    lateinit var currencyNominal: String
-    lateinit var currencyTicker: String
+    var currencyName: String = ""
+    var currencyValue: String = ""
+    var currencyNominal: String = ""
+    var currencyTicker: String = ""
 
     constructor(
         currencyName: String,

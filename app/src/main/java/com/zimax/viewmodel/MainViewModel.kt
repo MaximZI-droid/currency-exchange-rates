@@ -34,7 +34,7 @@ class MainViewModel : ViewModel() {
     private fun loadData() {
         val currencyRepository = CurrencyRepository()
         currencyRepository
-            .currencyList
+            .getCurrencyList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<List<Currency>> {

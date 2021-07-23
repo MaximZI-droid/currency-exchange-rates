@@ -16,8 +16,8 @@ import java.util.*
 
 class CurrencyRepository {
 
-    val currencyList: Single<List<Currency>>
-        get() = Single.create { emitter ->
+    fun getCurrencyList(): Single<List<Currency>> {
+        return Single.create { emitter ->
             val VALUTE = "Valute"
             val CHARCODE = "CharCode"
             val NOMINAL = "Nominal"
@@ -93,10 +93,10 @@ class CurrencyRepository {
                 emitter.onError(e)
             }
         }
+    }
 
     private fun setFlag(list: List<Currency>) {
         val countryFlag = CountryFlag()
-        countryFlag.createFlag()
         for (i in list.indices) {
             val str = list[i].currencyTicker
             for ((key, value) in countryFlag.flagContainer) {

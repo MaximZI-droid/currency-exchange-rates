@@ -5,11 +5,10 @@ import java.util.*
 
 class CountryFlag {
 
-    private val mapFlagContainer: MutableMap<String, Int> = HashMap()
-    val flagContainer: Map<String, Int>
-        get() = mapFlagContainer
+    val flagContainer: Map<String, Int> by lazy { createFlag() }
 
-    fun createFlag() {
+    private fun createFlag() : Map<String, Int> {
+        val mapFlagContainer: MutableMap<String, Int> = HashMap()
         mapFlagContainer["AUD"] = R.drawable.aud
         mapFlagContainer["AMD"] = R.drawable.amd
         mapFlagContainer["BGN"] = R.drawable.bgn
@@ -45,5 +44,6 @@ class CountryFlag {
         mapFlagContainer["ZAR"] = R.drawable.zar
         mapFlagContainer["GBP"] = R.drawable.gbp_fl
         mapFlagContainer["PLN"] = R.drawable.pln_fl
+        return mapFlagContainer
     }
 }
