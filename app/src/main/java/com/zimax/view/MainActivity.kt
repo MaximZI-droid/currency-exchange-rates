@@ -15,9 +15,9 @@ import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
-    private var recyclerView: RecyclerView? = null
-    private var currencyList: List<Currency>? = null
-    private var adapter: CurrencyRecyclerViewAdapter? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var currencyList: List<Currency>
+    private lateinit var adapter: CurrencyRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +30,9 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setLayoutManager(LinearLayoutManager(this))
 
 
-
         val mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         mainViewModel.getDataListCurrency().observe(this, { currencies ->
-            adapter = CurrencyRecyclerViewAdapter(currencies!!)
+            adapter = CurrencyRecyclerViewAdapter(currencies)
             recyclerView.setAdapter(adapter)
             currencyList = currencies
         })

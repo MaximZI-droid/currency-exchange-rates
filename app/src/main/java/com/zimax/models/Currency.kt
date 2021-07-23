@@ -5,12 +5,18 @@ import java.io.Serializable
 class Currency : Serializable {
 
     var currencyFlag = 0
-    var currencyName: String? = null
-    var currencyValue: String? = null
-    var currencyNominal: String? = null
-    var currencyTicker: String? = null
+    lateinit var currencyName: String
+    lateinit var currencyValue: String
+    lateinit var currencyNominal: String
+    lateinit var currencyTicker: String
 
-    constructor(currencyName: String?, currencyValue: String?, currencyNominal: String?, currencyTicker: String?, currencyFlag: Int) {
+    constructor(
+        currencyName: String,
+        currencyValue: String,
+        currencyNominal: String,
+        currencyTicker: String,
+        currencyFlag: Int
+    ) {
         this.currencyName = currencyName
         this.currencyValue = currencyValue
         this.currencyNominal = currencyNominal
@@ -18,5 +24,5 @@ class Currency : Serializable {
         this.currencyFlag = currencyFlag
     }
 
-    constructor() {}
+    constructor()
 }

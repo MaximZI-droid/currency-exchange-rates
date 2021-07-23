@@ -16,9 +16,6 @@ import java.util.*
 
 class CurrencyRepository {
 
-    //Log.d(LOG_TAG,value);//Log.d(LOG_TAG,curName);//Log.d(LOG_TAG,nominal);
-    //Log.d(LOG_TAG,charCode);
-
     val currencyList: Single<List<Currency>>
         get() = Single.create { emitter ->
             val VALUTE = "Valute"
@@ -26,9 +23,11 @@ class CurrencyRepository {
             val NOMINAL = "Nominal"
             val NAME = "Name"
             val VALUE = "Value"
-            var currencyList: MutableList<Currency>? = null
-            var url: URL? = null
-            var oneCurrency: Currency? = null
+
+            lateinit var currencyList: MutableList<Currency>
+            lateinit var url: URL
+            lateinit var oneCurrency: Currency
+
             val link = "http://www.cbr.ru/scripts/XML_daily.asp"
             val LOG_TAG = "myLOG"
             try {
@@ -41,8 +40,7 @@ class CurrencyRepository {
                 val factory = XmlPullParserFactory.newInstance()
                 factory.isNamespaceAware = true
                 val xmlParser = factory.newPullParser()
-                assert(url != null)
-                xmlParser.setInput(url!!.openStream(), null)
+                xmlParser.setInput(url.openStream(), null)
                 var eventType = xmlParser.eventType
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     var name = ""
@@ -52,7 +50,7 @@ class CurrencyRepository {
                         name = xmlParser.name
                         if (name == VALUTE) {
                             oneCurrency = Currency()
-                        } else if (oneCurrency != null) {
+                        } else {
                             if (name == CHARCODE) {
                                 val charCode = xmlParser.nextText()
                                 //Log.d(LOG_TAG,charCode);
@@ -73,13 +71,13 @@ class CurrencyRepository {
                         }
                     } else if (eventType == XmlPullParser.END_TAG) {
                         name = xmlParser.name
-                        if (name == VALUTE && oneCurrency != null) {
-                            currencyList!!.add(oneCurrency)
+                        if (name == VALUTE) {
+                            currencyList.add(oneCurrency)
                         }
                     }
                     eventType = xmlParser.next()
                 }
-                currencyList!!.add(Currency("Российский рубль", "1", "1", "RUB", R.drawable.rus))
+                currencyList.add(Currency("Российский рубль", "1", "1", "RUB", R.drawable.rus))
                 setFlag(currencyList)
                 emitter.onSuccess(currencyList)
             } catch (e: XmlPullParserException) {
@@ -96,10 +94,10 @@ class CurrencyRepository {
             }
         }
 
-    private fun setFlag(list: List<Currency>?) {
+    private fun setFlag(list: List<Currency>) {
         val countryFlag = CountryFlag()
         countryFlag.createFlag()
-        for (i in list!!.indices) {
+        for (i in list.indices) {
             val str = list[i].currencyTicker
             for ((key, value) in countryFlag.flagContainer) {
                 if (key == str) {

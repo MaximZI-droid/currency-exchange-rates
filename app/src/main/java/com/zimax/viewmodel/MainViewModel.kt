@@ -11,15 +11,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
+private const val LOG_TAG = "myLOG"
+
 class MainViewModel : ViewModel() {
 
     private val dataListCurrency = MutableLiveData<List<Currency>>()
     private var disposableCurrencyRepository: Disposable? = null
 
+    init {
+        loadData()
+    }
+
     override fun onCleared() {
-        if (disposableCurrencyRepository != null) {
-            disposableCurrencyRepository!!.dispose()
-        }
+        disposableCurrencyRepository?.dispose()
         super.onCleared()
     }
 
@@ -30,29 +34,23 @@ class MainViewModel : ViewModel() {
     private fun loadData() {
         val currencyRepository = CurrencyRepository()
         currencyRepository
-                .currencyList
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<List<Currency>> {
-                    override fun onSubscribe(d: Disposable) {
-                        disposableCurrencyRepository = d
-                    }
+            .currencyList
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : SingleObserver<List<Currency>> {
+                override fun onSubscribe(d: Disposable) {
+                    disposableCurrencyRepository = d
+                }
 
-                    override fun onSuccess(currencies: List<Currency>) {
-                        dataListCurrency.value = currencies
-                    }
+                override fun onSuccess(currencies: List<Currency>) {
+                    dataListCurrency.value = currencies
+                }
 
-                    override fun onError(e: Throwable) {
-                        Log.d(LOG_TAG, "onError $e")
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    Log.d(LOG_TAG, "onError $e")
+                }
+            })
     }
 
-    companion object {
-        private const val LOG_TAG = "myLOG"
-    }
 
-    init {
-        loadData()
-    }
 }

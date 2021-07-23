@@ -10,7 +10,8 @@ import com.zimax.R
 import com.zimax.models.Currency
 import com.zimax.view.CurrencyRecyclerViewAdapter.RecyclerViewViewHolder
 
-class CurrencyRecyclerViewAdapter(private val currencyList: List<Currency>) : RecyclerView.Adapter<RecyclerViewViewHolder>() {
+class CurrencyRecyclerViewAdapter(private val currencyList: List<Currency>) :
+    RecyclerView.Adapter<RecyclerViewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)

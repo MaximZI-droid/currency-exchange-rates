@@ -15,15 +15,21 @@ import java.util.ArrayList
 
 class ConverterActivity : AppCompatActivity(), OnItemSelectedListener {
 
-    private var currencyList: List<Currency>? = null
-    private var leftCurrencySpinner: Spinner? = null
-    private var rightCurrencySpinner: Spinner? = null
-    private var SpinnerList: List<String>? = null
-    private var leftChooseCurrency: String? = null
-    private var rightChooseCurrency: String? = null
-    private var rightTextView: TextView? = null
-    private var leftTextView: EditText? = null
-    private var converterViewModel: ConverterViewModel? = null
+    companion object {
+        const val EXTRA_ITEM = "extra_item_cur"
+    }
+
+    private lateinit var leftCurrencySpinner: Spinner
+    private lateinit var rightCurrencySpinner: Spinner
+
+    //поменять на private var lazy rightTextView: TextView
+    private lateinit var rightTextView: TextView
+
+    //поменять на private var lazy
+    private lateinit var leftTextView: EditText
+
+    //поменять на private var lazy
+    private lateinit var converterViewModel: ConverterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,20 +37,26 @@ class ConverterActivity : AppCompatActivity(), OnItemSelectedListener {
         title = "Конвертер валют"
 
         leftTextView = findViewById(R.id.leftConverterEditTextNumber)
-        val button = findViewById<Button>(R.id.button)
         rightTextView = findViewById(R.id.rightConverterTextView)
 
-        currencyList = intent.getSerializableExtra(EXTRA_ITEM) as ArrayList<Currency>?
-
-        converterViewModel = ViewModelProvider(this).get(ConverterViewModel::class.java)
-        converterViewModel!!.dataConverterResult.observe(this, { integer -> rightTextView.setText(integer.toString()) })
-
-        createSpinners()
-        createAdapter()
-
+        val button = findViewById<Button>(R.id.button)
         val changeButton = findViewById<FloatingActionButton>(R.id.changeButton)
         changeButton.setOnClickListener { changeCurrencyPlace() }
-        button.setOnClickListener { converterResult }
+        button.setOnClickListener { converterResult() }
+
+        converterViewModel = ViewModelProvider(this).get(ConverterViewModel::class.java)
+        converterViewModel.getDataConverterResult()
+            .observe(this, { integer -> rightTextView.setText(integer.toString()) })
+        converterViewModel.currencyList.clear()
+        converterViewModel.currencyList.addAll(intent.getSerializableExtra(EXTRA_ITEM) as ArrayList<Currency>)
+
+        leftCurrencySpinner = findViewById(R.id.leftConverterSpinner)
+        leftCurrencySpinner.setOnItemSelectedListener(this)
+        rightCurrencySpinner = findViewById(R.id.rightConverterSpinner)
+        rightCurrencySpinner.setOnItemSelectedListener(this)
+        converterViewModel.createSpinner()
+        createAdapter()
+
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
@@ -52,61 +64,45 @@ class ConverterActivity : AppCompatActivity(), OnItemSelectedListener {
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
+
     private fun replaceFlagAfterChoose() {
         val leftImageView = findViewById<ImageView>(R.id.leftConverterImageView)
         val rightImageView = findViewById<ImageView>(R.id.rightConverterImageView)
 
-        leftChooseCurrency = leftCurrencySpinner!!.selectedItem.toString()
-        rightChooseCurrency = rightCurrencySpinner!!.selectedItem.toString()
+        converterViewModel.ChangeFlagInSpinner(
+            leftCurrencySpinner.selectedItem.toString(),
+            rightCurrencySpinner.selectedItem.toString()
+        )
 
-        for (i in currencyList!!.indices) {
-            if (leftChooseCurrency == (currencyList!![i].currencyTicker + " ("
-                            + currencyList!![i].currencyName + ")")) {
-                leftImageView.setImageResource(currencyList!![i].currencyFlag)
-            }
-            if (rightChooseCurrency == (currencyList!![i].currencyTicker + " ("
-                            + currencyList!![i].currencyName + ")")) {
-                rightImageView.setImageResource(currencyList!![i].currencyFlag)
-            }
-        }
-    }
+        converterViewModel.getLeftImageViewLive()
+            .observe(this, { integer -> leftImageView.setImageResource(integer) })
+        converterViewModel.getRightImageViewLive()
+            .observe(this, { integer -> rightImageView.setImageResource(integer) })
 
-    private fun createSpinners() {
-        leftCurrencySpinner = findViewById(R.id.leftConverterSpinner)
-        leftCurrencySpinner.setOnItemSelectedListener(this)
-        rightCurrencySpinner = findViewById(R.id.rightConverterSpinner)
-        rightCurrencySpinner.setOnItemSelectedListener(this)
-
-        SpinnerList = ArrayList()
-
-        for (i in currencyList!!.indices) {
-            SpinnerList.add(i, currencyList!![i].currencyTicker + " ("
-                    + currencyList!![i].currencyName + ")")
-        }
     }
 
     private fun createAdapter() {
-        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, SpinnerList)
+        val spinnerAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, converterViewModel.SpinnerList)
         spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
 
-        leftCurrencySpinner!!.adapter = spinnerAdapter
-        rightCurrencySpinner!!.adapter = spinnerAdapter
+        leftCurrencySpinner.adapter = spinnerAdapter
+        rightCurrencySpinner.adapter = spinnerAdapter
     }
 
     private fun changeCurrencyPlace() {
-        val leftChoose = leftCurrencySpinner!!.selectedItemPosition
-        val rightChoose = rightCurrencySpinner!!.selectedItemPosition
+        val leftChoose = leftCurrencySpinner.selectedItemPosition
+        val rightChoose = rightCurrencySpinner.selectedItemPosition
 
-        leftCurrencySpinner!!.setSelection(rightChoose)
-        rightCurrencySpinner!!.setSelection(leftChoose)
+        leftCurrencySpinner.setSelection(rightChoose)
+        rightCurrencySpinner.setSelection(leftChoose)
     }
 
-    private val converterResult: Unit
-        private get() {
-            converterViewModel!!.converterInViewModel(leftChooseCurrency.toString(), rightChooseCurrency.toString(), currencyList, leftTextView!!.text.toString().toInt())
-        }
-
-    companion object {
-        const val EXTRA_ITEM = "extra_item_cur"
+    private fun converterResult() {
+        converterViewModel.converterInViewModel(
+            leftCurrencySpinner.selectedItem.toString(),
+            rightCurrencySpinner.selectedItem.toString(),
+            leftTextView.text.toString().toInt()
+        )
     }
 }
