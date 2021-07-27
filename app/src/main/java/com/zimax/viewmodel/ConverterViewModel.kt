@@ -71,7 +71,7 @@ class ConverterViewModel : ViewModel() {
         return rightImageLive
     }
 
-    fun ChangeFlagInSpinner(leftCurrencySpinner: String, rightCurrencySpinner: String) {
+    fun changeFlagInSpinner(leftCurrencySpinner: String, rightCurrencySpinner: String) {
 
         val leftChooseCurrency: String = leftCurrencySpinner
         val rightChooseCurrency: String = rightCurrencySpinner

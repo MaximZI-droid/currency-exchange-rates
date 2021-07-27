@@ -13,7 +13,8 @@ import io.reactivex.schedulers.Schedulers
 
 private const val LOG_TAG = "myLOG"
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val currencyRepository: CurrencyRepository) : ViewModel() {
+
 
     private val dataListCurrency = MutableLiveData<List<Currency>>()
     private var disposableCurrencyRepository: Disposable? = null
@@ -32,7 +33,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun loadData() {
-        val currencyRepository = CurrencyRepository()
+       // val currencyRepository = CurrencyRepository()
         currencyRepository
             .getCurrencyList()
             .subscribeOn(Schedulers.io())

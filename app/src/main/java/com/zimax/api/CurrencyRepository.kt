@@ -14,7 +14,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 
-class CurrencyRepository {
+class CurrencyRepository{
 
     fun getCurrencyList(): Single<List<Currency>> {
         return Single.create { emitter ->

@@ -63,7 +63,7 @@ class ConverterActivity : AppCompatActivity(), OnItemSelectedListener {
         val leftImageView = findViewById<ImageView>(R.id.leftConverterImageView)
         val rightImageView = findViewById<ImageView>(R.id.rightConverterImageView)
 
-        converterViewModel.ChangeFlagInSpinner(
+        converterViewModel.changeFlagInSpinner(
             leftCurrencySpinner.selectedItem.toString(),
             rightCurrencySpinner.selectedItem.toString()
         )
