@@ -1,19 +1,19 @@
-package com.zimax.viewmodel
+package com.zimax.presentation.viewmodel
 
-import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zimax.models.Currency
-import java.util.ArrayList
+import com.zimax.domain.models.Currency
+import com.zimax.domain.usecase.ConvertationUseCase
 
 private const val LOG_TAG = "myLOG"
 
 class ConverterViewModel : ViewModel() {
 
-    private val dataConverterResult = MutableLiveData<Int>()
+    private var dataConverterResult = MutableLiveData<Int>()
     val currencyList: MutableList<Currency> = mutableListOf()
     var spinnerList: MutableList<String> = mutableListOf()
+    val convertationUseCase = ConvertationUseCase()
 
     private val leftImageLive = MutableLiveData<Int>()
     private val rightImageLive = MutableLiveData<Int>()
@@ -23,31 +23,11 @@ class ConverterViewModel : ViewModel() {
         rightChooseCurrency: String,
         enteredNumber: Int
     ) {
-        try {
-            var convertInRub: Int
-            var convertInCur = 0
-            for (i in currencyList.indices) {
-                if (leftChooseCurrency == (currencyList[i].currencyTicker + " ("
-                            + currencyList[i].currencyName + ")")
-                ) {
-                    convertInRub =
-                        (enteredNumber / currencyList[i].currencyNominal.toInt() * currencyList[i].currencyValue.toFloat()).toInt()
-                    //Log.d("myLOG", convertInRub + "");
-                    for (j in currencyList.indices) {
-                        if (rightChooseCurrency == (currencyList[j].currencyTicker + " ("
-                                    + currencyList[j].currencyName + ")")
-                        ) {
-                            convertInCur =
-                                (convertInRub * currencyList[j].currencyNominal.toInt() / currencyList[j].currencyValue.toFloat()).toInt()
-                            //Log.d("myLOG", convertInCur + "");
-                        }
-                    }
-                }
-                dataConverterResult.value = convertInCur
-            }
-        } catch (e: NumberFormatException) {
-            e.printStackTrace()
-        }
+        dataConverterResult = convertationUseCase.convertCurrency(
+            leftChooseCurrency = leftChooseCurrency,
+            rightChooseCurrency = rightChooseCurrency,
+            enteredNumber = enteredNumber
+        )
     }
 
     fun getDataConverterResult(): LiveData<Int> {
@@ -89,6 +69,4 @@ class ConverterViewModel : ViewModel() {
             }
         }
     }
-
-
 }

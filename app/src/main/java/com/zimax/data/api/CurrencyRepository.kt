@@ -1,10 +1,10 @@
-package com.zimax.api
+package com.zimax.data.api
 
 import android.os.NetworkOnMainThreadException
 import android.util.Log
 import com.zimax.R
-import com.zimax.bussiness.CountryFlag
-import com.zimax.models.Currency
+import com.zimax.domain.bussiness.CountryFlag
+import com.zimax.domain.models.Currency
 import io.reactivex.Single
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException

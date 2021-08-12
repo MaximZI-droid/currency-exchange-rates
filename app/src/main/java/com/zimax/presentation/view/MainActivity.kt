@@ -1,17 +1,14 @@
-package com.zimax.view
+package com.zimax.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.zimax.R
-import com.zimax.api.CurrencyRepository
-import com.zimax.models.Currency
-import com.zimax.view.ConverterActivity
-import com.zimax.viewmodel.MainViewModel
+import com.zimax.domain.models.Currency
+import com.zimax.presentation.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.Serializable
 

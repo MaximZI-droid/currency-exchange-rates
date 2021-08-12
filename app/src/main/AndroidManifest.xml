@@ -14,8 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Converter">
 
-        <activity android:name="com.zimax.view.ConverterActivity" />
-        <activity android:name="com.zimax.view.MainActivity"
+        <activity android:name="com.zimax.presentation.view.ConverterActivity" />
+        <activity android:name="com.zimax.presentation.view.MainActivity"
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

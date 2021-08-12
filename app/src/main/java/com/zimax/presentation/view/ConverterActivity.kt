@@ -1,16 +1,15 @@
-package com.zimax.view
+package com.zimax.presentation.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.AdapterView.OnItemSelectedListener
-import com.zimax.viewmodel.ConverterViewModel
+import com.zimax.presentation.viewmodel.ConverterViewModel
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.zimax.R
-import com.zimax.view.ConverterActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.zimax.models.Currency
+import com.zimax.domain.models.Currency
 import java.util.ArrayList
 
 class ConverterActivity : AppCompatActivity(), OnItemSelectedListener {

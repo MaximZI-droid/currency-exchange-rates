@@ -1,4 +1,4 @@
-package com.zimax.view
+package com.zimax.presentation.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.zimax.R
-import com.zimax.models.Currency
-import com.zimax.view.CurrencyRecyclerViewAdapter.RecyclerViewViewHolder
+import com.zimax.domain.models.Currency
+import com.zimax.presentation.view.CurrencyRecyclerViewAdapter.RecyclerViewViewHolder
 
 class CurrencyRecyclerViewAdapter(private val currencyList: List<Currency>) :
     RecyclerView.Adapter<RecyclerViewViewHolder>() {
