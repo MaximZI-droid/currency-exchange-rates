@@ -1,4 +1,4 @@
-package com.zimax.bussiness
+package com.zimax.domain.bussiness
 
 import com.zimax.R
 import java.util.*

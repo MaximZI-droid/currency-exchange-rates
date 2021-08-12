@@ -1,7 +1,7 @@
 package com.zimax
 
-import com.zimax.api.CurrencyRepository
-import com.zimax.viewmodel.MainViewModel
+import com.zimax.data.api.CurrencyRepository
+import com.zimax.presentation.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

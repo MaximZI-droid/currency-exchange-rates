@@ -1,11 +1,12 @@
-package com.zimax.viewmodel
+package com.zimax.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zimax.api.CurrencyRepository
-import com.zimax.models.Currency
+import com.zimax.data.api.CurrencyRepository
+import com.zimax.domain.models.Currency
+import com.zimax.domain.usecase.CurrencyLoadUseCase
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -33,7 +34,6 @@ class MainViewModel(private val currencyRepository: CurrencyRepository) : ViewMo
     }
 
     private fun loadData() {
-       // val currencyRepository = CurrencyRepository()
         currencyRepository
             .getCurrencyList()
             .subscribeOn(Schedulers.io())
@@ -52,6 +52,4 @@ class MainViewModel(private val currencyRepository: CurrencyRepository) : ViewMo
                 }
             })
     }
-
-
 }

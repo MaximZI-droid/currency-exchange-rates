@@ -1,4 +1,4 @@
-package com.zimax.models
+package com.zimax.domain.models
 
 import java.io.Serializable
 
